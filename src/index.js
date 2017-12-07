@@ -8,8 +8,8 @@ const kansatsu = () => {
     }
 
     const observer = new window.IntersectionObserver(handler, {
-      threshold: 0,
-      rootMargin: '100%'
+      threshold: options.appear || 0,
+      rootMargin: options.rootMargin || '100%'
     })
 
     return {
