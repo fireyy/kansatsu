@@ -1,29 +1,27 @@
-const kansatsu = () => {
+export default (options) => {
+  const {
+    root = null,
+    appear = 0,
+    offset,
+    rootMargin = '-100%',
+    callback = _ => {}
+  } = options || {}
 
-  return options => {
-    const {
-      root = null,
-      appear = 0,
-      offset,
-      rootMargin = '-100%'
-    } = options
+  const handler = (entries, observer) => {
+    entries.forEach(entry => {
+      const unwatch = () => observer.unobserve(entry.target)
 
-    const handler = (entries, observer) => {
-      entries.forEach(entry => {
-        //
-      })
-    }
-
-    const observer = new window.IntersectionObserver(handler, {
-      root: root,
-      threshold: appear,
-      rootMargin: offset ? `-${offset}%` : rootMargin || '0%'
+      callback(entry.target, entry.intersectionRatio > 0, unwatch)
     })
+  }
 
-    return {
-      watch: node => observer.observe(node)
-    }
+  const observer = new IntersectionObserver(handler, {
+    root: root,
+    threshold: appear,
+    rootMargin: offset ? `-${offset}%` : rootMargin || '0%'
+  })
+
+  return {
+    watch: node => observer.observe(node)
   }
 }
-
-export default kansatsu()
