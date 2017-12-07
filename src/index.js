@@ -1,6 +1,12 @@
 const kansatsu = () => {
 
   return options => {
+    const {
+      appear = 0,
+      offset,
+      rootMargin = '-100%'
+    } = options
+
     const handler = (entries, observer) => {
       entries.forEach(entry => {
         //
@@ -8,8 +14,8 @@ const kansatsu = () => {
     }
 
     const observer = new window.IntersectionObserver(handler, {
-      threshold: options.appear || 0,
-      rootMargin: options.rootMargin || '100%'
+      threshold: appear,
+      rootMargin: offset ? `-${offset}%` : rootMargin || '0px'
     })
 
     return {
