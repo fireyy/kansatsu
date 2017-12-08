@@ -1,4 +1,8 @@
 export default (options) => {
+  if (!('IntersectionObserver' in window)) {
+    throw new Error('IntersectionObserver is not supported, see: https://github.com/w3c/IntersectionObserver/tree/master/polyfill for the polyfill')
+  }
+
   const {
     root = null,
     appear = 0,
@@ -11,14 +15,14 @@ export default (options) => {
     entries.forEach(entry => {
       const unwatch = () => observer.unobserve(entry.target)
 
-      callback(entry.target, entry.intersectionRatio > 0, unwatch)
+      callback(entry.target, entry.isIntersecting, unwatch)
     })
   }
 
-  const observer = new IntersectionObserver(handler, {
+  const observer = new window.IntersectionObserver(handler, {
     root: root,
     threshold: appear,
-    rootMargin: offset ? `-${offset}%` : rootMargin || '0%'
+    rootMargin: offset ? `${offset}% 0px` : rootMargin || '0%'
   })
 
   return {

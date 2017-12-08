@@ -1,50 +1,71 @@
-require('jsdom-global')()
 import test from 'ava'
+import puppeteer from 'puppeteer'
+import path from 'path'
 import Kansatsu from '../'
 
-test('Kansatsu should be a function', t => {
-	t.is('function', typeof Kansatsu)
+const base = path.join(__dirname, '../', 'test.html')
+
+let browser
+let page
+let baseUrl = `file://${base}`
+
+test('Kansatsu should be a function', async t => {
+  t.is('function', typeof Kansatsu)
 })
 
-test('Kansatsu should return object', t => {
-  const kansatsu = Kansatsu()
+test('Kansatsu should return object', async t => {
+  let kansatsu = Kansatsu()
 	t.is('object', typeof kansatsu)
 })
 
-test('Kansatsu return should expose watch', t => {
-  const kansatsu = Kansatsu()
+test('Kansatsu return should expose watch', async t => {
+  let kansatsu = Kansatsu()
 	t.is('function', typeof kansatsu.watch)
 })
 
-test.before(t => {
-  document.body.innerHTML = ''
-  const div = document.createElement('div')
-  document.body.appendChild(div)
-});
-
-test('Kansatsu unwatch', t => {
-  const div = document.getElementsByTagName('div')[0]
-	const kansatsu = Kansatsu({
-    callback (el, isAppear, unwatch) {
-      if (isAppear) {
-        el.classList.add('appear')
-      }
-    }
-  })
-
-	t.is(0, div.classList.length)
+test.before(async t => {
+	browser = await puppeteer.launch(
+    process.env.DEBUG
+      ? {
+          headless: false,
+          slowMo: 100,
+        }
+      : {}
+  )
+  page = await browser.newPage()
+  await page.goto(baseUrl, {waitUntil: 'networkidle0'})
+  await page.waitForSelector('.man')
 })
 
-test('Kansatsu watch and add `.appear` to div', t => {
-  const div = document.getElementsByTagName('div')[0]
-	const kansatsu = Kansatsu({
-    callback (el, isAppear, unwatch) {
-      if (isAppear) {
-        el.classList.add('appear')
-      }
-    }
+test('Page should be ready', async t => {
+  const result = await page.evaluate(() => {
+    return Array.prototype.slice.call(document.querySelectorAll('.man'))
   })
-  kansatsu.watch(div)
+  t.is(3, result.length)
+})
 
-	t.is(true, div.classList.contains('appear'))
+test('Kansatsu unwatch', async t => {
+  const result = await page.evaluate(() => {
+    const woman = document.querySelectorAll('.woman')
+    return Array.prototype.slice.call(woman).filter(el => {
+      return el.classList.contains('is-appear')
+    })
+  })
+
+	t.is(0, result.length)
+})
+
+test('Kansatsu watch action', async t => {
+  const result = await page.evaluate(() => {
+    const man = document.querySelectorAll('.man')
+    return Array.prototype.slice.call(man).filter(el => {
+      return el.classList.contains('is-appear')
+    })
+  })
+
+	t.is(3, result.length)
+})
+
+test.after('cleanup', t => {
+	browser.close()
 })

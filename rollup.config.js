@@ -10,7 +10,7 @@ export default [
 			file: pkg.browser,
 			format: 'umd'
 		},
-		name: 'kansatsu',
+		name: 'Kansatsu',
 		plugins: [
       buble(),
 			resolve(),

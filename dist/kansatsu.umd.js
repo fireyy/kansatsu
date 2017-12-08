@@ -1,10 +1,14 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.kansatsu = factory());
+	(global.Kansatsu = factory());
 }(this, (function () { 'use strict';
 
 var index = function (options) {
+  if (!('IntersectionObserver' in window)) {
+    throw new Error('IntersectionObserver is not supported, see: https://github.com/w3c/IntersectionObserver/tree/master/polyfill for the polyfill')
+  }
+
   var ref = options || {};
   var root = ref.root; if ( root === void 0 ) root = null;
   var appear = ref.appear; if ( appear === void 0 ) appear = 0;
@@ -16,14 +20,14 @@ var index = function (options) {
     entries.forEach(function (entry) {
       var unwatch = function () { return observer.unobserve(entry.target); };
 
-      callback(entry.target, entry.intersectionRatio > 0, unwatch);
+      callback(entry.target, entry.isIntersecting, unwatch);
     });
   };
 
-  var observer = new IntersectionObserver(handler, {
+  var observer = new window.IntersectionObserver(handler, {
     root: root,
     threshold: appear,
-    rootMargin: offset ? ("-" + offset + "%") : rootMargin || '0%'
+    rootMargin: offset ? (offset + "% 0px") : rootMargin || '0%'
   });
 
   return {

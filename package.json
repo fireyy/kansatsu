@@ -9,10 +9,11 @@
   "dependencies": {},
   "devDependencies": {
     "ava": "^0.16.0",
+    "browser-env": "^3.2.4",
     "cross-env": "^5.1.1",
     "eslint": "^3.7.1",
-    "jsdom": "^11.5.1",
-    "jsdom-global": "^3.0.2",
+    "intersection-observer": "^0.5.0",
+    "puppeteer": "^0.13.0",
     "rollup": "^0.50.0",
     "rollup-plugin-buble": "^0.18.0",
     "rollup-plugin-commonjs": "^8.2.6",
@@ -31,5 +32,10 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "ava": {
+    "require": [
+      "./test/helpers/browser-env.js"
+    ]
+  }
 }

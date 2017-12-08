@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>kansatsu test</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div class="woman"></div>
+  <div class="man"></div>
+  <div class="man"></div>
+  <div class="man"></div>
+  <script src="dist/kansatsu.umd.js"></script>
+  <script>
+    const man = document.querySelectorAll('.man')
+    let kansatsu = Kansatsu({
+      offset: 100,
+      callback (el, isAppear, unwatch) {
+        if (isAppear) {
+          el.classList.add('is-appear')
+          unwatch()
+        }
+      }
+    })
+    Array.from(man).forEach(el => {
+      kansatsu.watch(el)
+    })
+  </script>
+</body>
+</html>
