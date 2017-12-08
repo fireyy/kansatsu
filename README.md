@@ -1,6 +1,10 @@
 # kansatsu
 
-> A wrapper of Intersection Observer API. Kansatsu is a Japanese word [観察 (かんさつ)](https://en.wiktionary.org/wiki/観察) in Rōmaji, which means observe.
+> A wrapper of Intersection Observer API.
+
+Kansatsu is a Japanese word [観察 (かんさつ)](https://en.wiktionary.org/wiki/観察) in Rōmaji, which means observe.
+
+## Getting started
 
 You may need a library polyfills the native IntersectionObserver API in unsupporting browsers. [w3c IntersectionObserver polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill)
 
