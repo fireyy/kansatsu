@@ -6,6 +6,15 @@
   "main": "dist/kansatsu.cjs.js",
   "module": "dist/kansatsu.esm.js",
   "jsnext:main": "dist/kansatsu.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fireyy/kansatsu.git"
+  },
+  "keywords": [
+    "Observer",
+    "IntersectionObserver"
+  ],
+  "author": "fireyy <fireyy@gmail.com>",
   "dependencies": {},
   "devDependencies": {
     "ava": "^0.16.0",
